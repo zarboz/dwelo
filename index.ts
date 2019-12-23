@@ -22,10 +22,10 @@ class DwelolocksAccessory {
         this.name = config.name;
         this.api = new DweloApi(config.home, config.token);
 
-        this.services = config.locks
+        this.services = config.lights
             .map(id => this.api.createlock(id))
             .map(lock => {
-                const service = new Service.lockbulb(this.name, lock.id);
+                const service = new Service.Lightbulb(this.name, lock.id);
                 service.getCharacteristic(Characteristic.On)
                     .on('get', lock.get.bind(lock))
                     .on('set', lock.set.bind(lock));

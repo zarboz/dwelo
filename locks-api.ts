@@ -70,7 +70,7 @@ export class DweloApi {
     }
 
     togglelock(lock: boolean, id: number) {
-        const command = `{"command":"${lock ? 'locked' : 'unlocked'}"}`;
+        const command = `{"command":"${lock ? 'lock' : 'unlock'}"}`;
         const path = `/v3/device/${id}/command/`;
         deviceMap.set(id, lock);
         return this.makeRequest(path).POST(command);
