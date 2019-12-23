@@ -1,15 +1,15 @@
 var request = require("request");
-import {DweloApi} from "./lights-api";
+import {DweloApi} from "./locks-api";
 var Service, Characteristic;
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
-    homebridge.registerAccessory("homebridge-dwelo-lights", "Dwelo Lights", DweloLightsAccessory);
+    homebridge.registerAccessory("homebridge-dwelo-locks", "Dwelo Locks", DwelolocksAccessory);
 }
 
-class DweloLightsAccessory {
+class DwelolocksAccessory {
     log: any;
     config: any;
     name: string;
@@ -22,13 +22,13 @@ class DweloLightsAccessory {
         this.name = config.name;
         this.api = new DweloApi(config.home, config.token);
 
-        this.services = config.lights
-            .map(id => this.api.createLight(id))
-            .map(light => {
-                const service = new Service.Lightbulb(this.name, light.id);
+        this.services = config.locks
+            .map(id => this.api.createlock(id))
+            .map(lock => {
+                const service = new Service.lockbulb(this.name, lock.id);
                 service.getCharacteristic(Characteristic.On)
-                    .on('get', light.get.bind(light))
-                    .on('set', light.set.bind(light));
+                    .on('get', lock.get.bind(lock))
+                    .on('set', lock.set.bind(lock));
                 return service;
             });
     }

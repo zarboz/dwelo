@@ -4,7 +4,7 @@ const SUCCESS = null;
 
 const deviceMap = new Map<number, boolean>();
 
-class DweloLight {
+class Dwelolock {
     constructor(private readonly api, public readonly id) {
     }
 
@@ -15,7 +15,7 @@ class DweloLight {
     }
 
     set = (state, callback) => {
-        this.api.toggleLight(state, this.id)
+        this.api.togglelock(state, this.id)
             .then(() => callback(SUCCESS))
             .catch(callback);
     }
@@ -25,8 +25,8 @@ export class DweloApi {
     constructor(private readonly home, private readonly token) {
     }
 
-    createLight(id) {
-        return new DweloLight(this, id);
+    createlock(id) {
+        return new Dwelolock(this, id);
     }
 
     makeRequest(path) {
@@ -69,10 +69,10 @@ export class DweloApi {
         }
     }
 
-    toggleLight(on: boolean, id: number) {
-        const command = `{"command":"${on ? 'on' : 'off'}"}`;
+    togglelock(lock: boolean, id: number) {
+        const command = `{"command":"${lock ? 'locked' : 'unlocked'}"}`;
         const path = `/v3/device/${id}/command/`;
-        deviceMap.set(id, on);
+        deviceMap.set(id, lock);
         return this.makeRequest(path).POST(command);
     }
 
